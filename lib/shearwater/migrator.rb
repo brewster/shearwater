@@ -2,14 +2,16 @@ module Shearwater
 
   class Migrator
 
-    def initialize(migrations_dir, backend)
+    def initialize(migrations_dir, backend, options = {})
       @migrations_dir, @backend = migrations_dir, backend
+      @verbose = !!options[:verbose]
     end
 
     def migrate
       migrations.keys.sort.each do |id|
         unless @backend.migrated?(id)
           migration = migrations[id]
+          say "Migrating #{migration.class.name}"
           migration.up
           @backend.migrated!(id)
         end
@@ -20,6 +22,7 @@ module Shearwater
       step.times do
         id = @backend.last_migration
         migration = migrations[id]
+        say "Rolling back #{migration.class.name}"
         migration.down
         @backend.rolled_back!(id)
       end
@@ -39,6 +42,12 @@ module Shearwater
           end
         end
       end
+    end
+
+    private
+
+    def say(message)
+      puts message if @verbose
     end
 
   end
