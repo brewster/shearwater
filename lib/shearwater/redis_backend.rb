@@ -19,7 +19,8 @@ module Shearwater
     end
 
     def last_migration
-      @redis.zrange(@key, -1, -1).first
+      id = @redis.zrange(@key, -1, -1).first
+      id.to_i if id
     end
 
   end
