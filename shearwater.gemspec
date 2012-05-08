@@ -14,7 +14,7 @@ have been run, and doesn't make any assumptions about what you want to do with
 your migrations. Shearwater doesn't depend on any ORMs or frameworks.
 DESC
 
-  s.files = []
+  s.files = Dir['lib/**/*.rb', 'spec/**/*.rb']
   s.test_files = Dir['spec/examples/**/*.rb']
   s.has_rdoc = false
   #s.extra_rdoc_files = 'README.md'
