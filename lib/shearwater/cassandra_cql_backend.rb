@@ -24,11 +24,12 @@ module Shearwater
     end
 
     def last_migration
-      row = execute(
+      rows = []
+      execute(
         "SELECT version, migrated_at FROM #{@column_family}"
-      ).map { |row| row.to_hash }.
-        sort { |row2, row1| row1['migrated_at'] <=> row1['migrated_at'] }.first
-      row['version'] if row
+      ).fetch { |row| rows << row.to_hash }
+      row = rows.sort { |row1, row2| row1['version'].to_i <=> row2['version'].to_i }.last
+      row['version'].to_i if row
     end
 
     private
