@@ -2,7 +2,7 @@ require File.expand_path('../lib/shearwater/version', __FILE__)
 require 'rspec/core/rake_task'
 
 task :default => :release
-task :release => [:build, :tag, :update_stable, :push, :cleanup]
+task :release => [:test, :build, :tag, :update_stable, :push, :cleanup]
 
 desc 'Build gem'
 task :build do
@@ -22,8 +22,10 @@ task :update_stable do
   end
 end
 
-desc 'Push gem to repository'
-task :push => :inabox
+desc 'Push gem to rubygems.org'
+task :push do
+  system "gem push shearwater-#{Shearwater::VERSION}.gem"
+end
 
 task 'Push gem to geminabox'
 task :inabox do
@@ -36,4 +38,6 @@ task :cleanup do
 end
 
 desc 'Run the specs'
-RSpec::Core::RakeTask.new(:test)
+task :test do
+  abort unless system 'bundle', 'exec', 'rspec', 'spec/examples'
+end
