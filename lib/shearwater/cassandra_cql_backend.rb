@@ -28,7 +28,7 @@ module Shearwater
       execute(
         "SELECT version, migrated_at FROM #{@column_family}"
       ).fetch { |row| rows << row.to_hash }
-      row = rows.reject { |row| row['migrated_at'] == nil }.sort { |row1, row2| row1['version'].to_i <=> row2['version'].to_i }.last
+      row = rows.reject { |row| row['migrated_at'].nil? }.sort { |row1, row2| row1['version'].to_i <=> row2['version'].to_i }.last
       row['version'].to_i if row
     end
 
