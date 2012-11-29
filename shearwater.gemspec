@@ -20,6 +20,6 @@ DESC
   #s.extra_rdoc_files = 'README.md'
   s.required_ruby_version = '>= 1.9'
   s.add_development_dependency 'rspec', '~> 2.0'
-  s.add_development_dependency 'ruby-debug19', '~> 0.11'
+  s.add_development_dependency 'debugger'
   s.add_development_dependency 'yard', '~> 0.6'
 end
