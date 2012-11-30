@@ -3,8 +3,8 @@ require File.expand_path('../lib/shearwater/version', __FILE__)
 Gem::Specification.new do |s|
   s.name = 'shearwater'
   s.version = Shearwater::VERSION
-  s.authors = ['Mat Brown']
-  s.email = 'mat.a.brown@gmail.com'
+  s.authors = ['Mat Brown', 'Andrew De Ponte']
+  s.email = ['mat.a.brown@gmail.com', 'cyphactor@gmail.com']
   s.license = 'MIT'
   s.summary = 'Tiny everything-agnostic migrations framework'
   s.description = <<DESC
