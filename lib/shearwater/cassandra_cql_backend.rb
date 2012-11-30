@@ -9,17 +9,17 @@ module Shearwater
     def migrated!(id)
       execute(
         "INSERT INTO #{@column_family} (version, migrated_at) VALUES (?, ?)",
-        id, Time.now
+        id.to_i, Time.now
       )
     end
 
     def rolled_back!(id)
-      execute("DELETE FROM #{@column_family} WHERE version = ?", id)
+      execute("DELETE FROM #{@column_family} WHERE version = ?", id.to_i)
     end
 
     def migrated?(id)
       !!execute(
-        "SELECT migrated_at FROM #{@column_family} WHERE version = ?", id
+        "SELECT migrated_at FROM #{@column_family} WHERE version = ?", id.to_i
       ).fetch_row.to_hash['migrated_at']
     end
 
