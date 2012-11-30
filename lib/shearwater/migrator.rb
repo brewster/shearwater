@@ -21,6 +21,7 @@ module Shearwater
     def rollback(step = 1)
       step.times do
         id = @backend.last_migration
+        break if id.nil?
         migration = migrations[id]
         say "Rolling back #{migration.class.name}"
         migration.down

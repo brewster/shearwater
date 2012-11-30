@@ -32,27 +32,35 @@ describe Shearwater::Migrator do
   end
 
   describe '#rollback' do
-    before do
-      1.upto(3) { |i| backend.migrated!(i) }
+    context 'with previous migrations' do
+      before(:each) do
+        1.upto(3) { |i| backend.migrated!(i) }
+      end
+
+      it 'should roll back most recent change' do
+        migrator.rollback
+        tracker.should have_rolled_back(3)
+        tracker.should_not have_rolled_back(2)
+        tracker.should_not have_rolled_back(1)
+      end
+
+      it 'should mark migration as rolled back in backend' do
+        migrator.rollback
+        backend.migrated?(3).should be_false
+      end
+
+      it 'should run multiple migrations if passed' do
+        migrator.rollback(2)
+        tracker.should have_rolled_back(3)
+        tracker.should have_rolled_back(2)
+        tracker.should_not have_rolled_back(1)
+      end
     end
 
-    it 'should roll back most recent change' do
-      migrator.rollback
-      tracker.should have_rolled_back(3)
-      tracker.should_not have_rolled_back(2)
-      tracker.should_not have_rolled_back(1)
-    end
-
-    it 'should mark migration as rolled back in backend' do
-      migrator.rollback
-      backend.migrated?(3).should be_false
-    end
-
-    it 'should run multiple migrations if passed' do
-      migrator.rollback(2)
-      tracker.should have_rolled_back(3)
-      tracker.should have_rolled_back(2)
-      tracker.should_not have_rolled_back(1)
+    context 'without previous migrations' do
+      it 'should silently succeed if no migrations left to rollback' do
+        migrator.rollback
+      end
     end
   end
 end
